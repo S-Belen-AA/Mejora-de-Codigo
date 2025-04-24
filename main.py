@@ -79,15 +79,18 @@ def mostrar_resultados(datos):
 
             snippet = item.get('snippet', 'Descripción no disponible')
 
-            print(f"Title: {title}")
+            print(f"Title: {title} \n")
 
-            print(f"Link: {link}")
+            print(f"Link: {link} \n")
 
-            print(f"Snippet: {snippet}")
+            print(f"Snippet: {snippet} \n")
 
-            print("-" * 80)
+            print("\n-" * 80)
 
 if __name__ == "__main__":
+    print("Llegué al main")
     api_key, search_engine_id = cargar_variables_entorno()
     mi_url = construir_url(api_key, search_engine_id)
+    print("Imprime la URL"+mi_url)
     datos = realizar_solicitud(mi_url)
+    print(datos)
