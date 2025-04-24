@@ -26,40 +26,68 @@ def construir_url(
     page=1,
     lang="lang_es"
 ):
-    return f"https://www.googleapis.com/customsearch/v1?key={API_KEY}&cx={SEARCH_ENGINE_ID}&q={query}&start={page}&lr={lang}"
+    return f"https://www.googleapis.com/customsearch/v1?key={api_key}&cx={search_engine_id}&q={query}&start={page}&lr={lang}"
 
-# Realizar la solicitud a la API
+# Realizar solicitud a la API 
 
 def realizar_solicitud(url):
 
-response = requests.get(url)
+    try:
 
-data = response.json()
+        # Hacer solicitud
 
+        response = requests.get(url)
 
+        # Convertir a JSON (a diccionario de PYTHON)
 
-result= data.get('items', [])
+        data = response.json()
 
-if not result:
+        #Devolver los datos
 
-    print("No se encontraron resultados.")
+        return data
 
-else:
+# En caso de errores
 
-    for item in result:
+    except requests.exceptions.RequestException as e: # "RequestException" es una clase que representa errores de conexión (como sin internet, mala URL, etc). 
 
-        title = item.get('title')
+        # Error de red
 
-        link = item.get('link')
+        print("Ocurrió un error al hacer la solicitud")
 
-        snippet = item.get('snippet')
+        return None # Aclaración tardía, "return" es una "keyword" en python que nos sirve para devolver un valor desde una función al lugar donde fue llamada.
+                    # "None" Es un valor especial que significa “nada”, “vacío” o “no hubo resultado”.
 
-        print(f"Title: {title}")
+# Aquí obtendremos los datos que solicitamos
 
-        print(f"Link: {link}")
+def mostrar_resultados(datos):
+     
+    resultados = datos.get('items', {}) # "items" es una clave del diccionario principal "datos" que contiene una lista de diccionarios.
 
-        print(f"Snippet: {snippet}")
+    if not resultados:
 
-        print("-" * 80)
+        print("No se encontraron resultados.")
 
-        
+    else:
+
+        # Determinaremos que si no se encuentra un valor específico, no devuelva "None" sino que un "texto alternativo".
+
+        for item in resultados: # Aquí con "item"recorremos la lista de diccionarios dentro de "items"
+
+            title = item.get('title', 'Título no disponible')
+
+            link = item.get('link', 'Link no disponible')
+
+            snippet = item.get('snippet', 'Descripción no disponible')
+
+            print(f"Title: {title}")
+
+            print(f"Link: {link}")
+
+            print(f"Snippet: {snippet}")
+
+            print("-" * 80)
+
+if __name__ == "__main__":
+    api_key, search_engine_id = cargar_variables_entorno()
+    mi_url = construir_url(api_key, search_engine_id)
+    datos = realizar_solicitud(mi_url)
