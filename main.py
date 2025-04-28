@@ -5,6 +5,8 @@ from dotenv import load_dotenv
 
 import os
 
+title=""
+
 # Cargar variables de entorno
 
 def cargar_variables_entorno():
@@ -60,6 +62,7 @@ def realizar_solicitud(url):
 # Aquí obtendremos los datos que solicitamos
 
 def mostrar_resultados(datos):
+
      
     resultados = datos.get('items', {}) # "items" es una clave del diccionario principal "datos" que contiene una lista de diccionarios.
 
@@ -79,13 +82,13 @@ def mostrar_resultados(datos):
 
             snippet = item.get('snippet', 'Descripción no disponible')
 
-            print(f"Title: {title} \n")
+    print(f"Title: {title} \n")
 
-            print(f"Link: {link} \n")
+    print(f"Link: {link} \n")
 
-            print(f"Snippet: {snippet} \n")
+    print(f"Snippet: {snippet} \n")
 
-            print("\n-" * 80)
+    print(80)
 
 if __name__ == "__main__":
     print("Llegué al main")
@@ -93,4 +96,6 @@ if __name__ == "__main__":
     mi_url = construir_url(api_key, search_engine_id)
     print("Imprime la URL"+mi_url)
     datos = realizar_solicitud(mi_url)
-    print(datos)
+    #print(datos)
+    resultado = mostrar_resultados(datos)
+    print(resultado)
